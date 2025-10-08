@@ -75,7 +75,12 @@ function createWindow(sendToRenderer, geminiSessionRef, randomNames = null) {
         mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
     }
 
-    mainWindow.loadFile(path.join(__dirname, '../index.html'));
+    // Load from dist in production, src in development
+    const isDev = process.env.NODE_ENV === 'development';
+    const htmlPath = isDev 
+        ? path.join(__dirname, '../index.html')
+        : path.join(__dirname, '../../dist/index.html');
+    mainWindow.loadFile(htmlPath);
 
     // Set window title to random name if provided
     if (randomNames && randomNames.windowTitle) {
